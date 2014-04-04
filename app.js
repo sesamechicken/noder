@@ -27,7 +27,7 @@ setInterval(sendTime, 30000);
 io.sockets.on('connection', function(socket) {
     
     socket.emit('welcome', { message: 'Welcome!' });
-    socket.broadcast.emit('welcome', {message: 'User connected'});
+    socket.broadcast.emit('welcome', {message: 'A new user connected...'});
 
 
     socket.on('message', function(data){
@@ -38,7 +38,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('new user', function(data){
       console.log(data);
       //user = data.data;
-      socket.broadcast.emit('welcome', { message: 'Welcome, '+ data.data +'!' });
+      socket.broadcast.emit('welcome', { message: 'Welcome new user: <em>'+ data.data +'</em>!' });
     });
 
 
