@@ -1,14 +1,22 @@
 <!doctype html>
 <html>
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sesamechicken's noder</title>
 <style type="text/css">
 body{
 	font-size: 90%;
-font-family: 'Helvetica', sans-serif;
+	font-family: 'Helvetica', sans-serif;
 }
 input[type=text]{
 	padding: 0.3em;
 
+}
+.wrapper{
+	margin: 5% auto;
+	max-width: 700px;
+	width: 96%;
 }
 .message-box{
 	max-height: 500px;
@@ -35,33 +43,137 @@ input[type=text]{
 	font-weight: bold;
 }
 .their-username{
-	color: #333;
+	color: #FF008F;
 	font-weight: bold;
 }
+/* ------------------------------------------
+ * CSS3 GITHUB BUTTONS (Nicolas Gallagher)
+ * Licensed under Unlicense
+ * http://github.com/necolas/css3-github-buttons
+ * --------------------------------------- */
+
+
+/* =============================================================================
+   Base Button
+   ========================================================================== */
+
+.button {
+    position: relative;
+    overflow: visible;
+    display: inline-block;
+    padding: 0.5em 1em;
+    border: 1px solid #d4d4d4;
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 1px 1px 0 #fff;
+    font:0.8em/normal sans-serif;
+    color: #333;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    background-color: #ececec;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f4f4f4), to(#ececec));
+    background-image: -moz-linear-gradient(#f4f4f4, #ececec);
+    background-image: -ms-linear-gradient(#f4f4f4, #ececec);
+    background-image: -o-linear-gradient(#f4f4f4, #ececec);
+    background-image: linear-gradient(#f4f4f4, #ececec);
+    -moz-background-clip: padding; /* for Firefox 3.6 */
+    background-clip: padding-box;
+    border-radius: 0.2em;
+    /* IE hacks */
+    zoom: 1;
+    *display: inline;
+}
+
+.button:hover,
+.button:focus,
+.button:active,
+.button.active {
+    border-color: #3072b3;
+    border-bottom-color: #2a65a0;
+    text-decoration: none;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    color: #fff;
+    background-color: #3c8dde;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#599bdc), to(#3072b3));
+    background-image: -moz-linear-gradient(#599bdc, #3072b3);
+    background-image: -o-linear-gradient(#599bdc, #3072b3);
+    background-image: linear-gradient(#599bdc, #3072b3);
+}
+
+.button:active,
+.button.active {
+    border-color: #2a65a0;
+    border-bottom-color: #3884cd;
+    background-color: #3072b3;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3072b3), to(#599bdc));
+    background-image: -moz-linear-gradient(#3072b3, #599bdc);
+    background-image: -ms-linear-gradient(#3072b3, #599bdc);
+    background-image: -o-linear-gradient(#3072b3, #599bdc);
+    background-image: linear-gradient(#3072b3, #599bdc);
+}
+
+/* overrides extra padding on button elements in Firefox */
+.button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+/* Primary button
+   ========================================================================== */
+
+.button.primary {
+    font-weight: bold;
+}
+
+/* Danger button
+   ========================================================================== */
+
+.button.danger {
+    color: #900;
+}
+
+.button.danger:hover,
+.button.danger:focus,
+.button.danger:active {
+    border-color: #b53f3a;
+    border-bottom-color: #a0302a;
+    color: #fff;
+    background-color: #dc5f59;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dc5f59), to(#b33630));
+    background-image: -moz-linear-gradient(#dc5f59, #b33630);
+    background-image: -ms-linear-gradient(#dc5f59, #b33630);
+    background-image: -o-linear-gradient(#dc5f59, #b33630);
+    background-image: linear-gradient(#dc5f59, #b33630);
+}
+
+.button.danger:active,
+.button.danger.active {
+    border-color: #a0302a;
+    border-bottom-color: #bf4843;
+    background-color: #b33630;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b33630), to(#dc5f59));
+    background-image: -moz-linear-gradient(#b33630, #dc5f59);
+    background-image: -ms-linear-gradient(#b33630, #dc5f59);
+    background-image: -o-linear-gradient(#b33630, #dc5f59);
+    background-image: linear-gradient(#b33630, #dc5f59);
+}
+
+
+
 </style>
 <script src='//code.jquery.com/jquery-1.7.2.min.js'></script>
 <script src='//localhost:3000/socket.io/socket.io.js'></script>
 <script>
 
-
-
-
-
-
-
 var socket = io.connect('//localhost:3000');
-
 socket.on('welcome', function(data) {
-    
-
 
     if(data.user){
     	$('#messages').append('<div class="message"><span class="their-username">'+ data.user +'</span> - ' + data.message + '</div>');
-    	console.log('we have user name: ' + data.user);
     }
     else{
     	$('#messages').append('<div class="message">' + data.message + '</div>');
-    	console.log('no username - could be a welcome message');
     }
 
 
@@ -72,9 +184,17 @@ socket.on('welcome', function(data) {
 
 
 
+socket.on('message', function(data){
+	$('#messages').append('<div class="message"><span class="their-username">'+ data.user +'</span> - ' + data.message + '</div>');
+})
+
+
+socket.on('userlist', function(data) {
+    $('#messages').append('<div class="info">User count: ' + data.user_count + '</div>' + '<code>'+ data.user_id_list +'</code><br><code>'+ data.user_name_list +'</code>');
+    scrollToBottom();
+});
 
 socket.on('time', function(data) {
-    console.log(data);
     $('#messages').append('<div class="info">' + data.time + '</div>');
     scrollToBottom();
 });
@@ -83,7 +203,7 @@ socket.on('time', function(data) {
 
 
 socket.on('error', function() { console.error(arguments) });
-socket.on('message', function() { console.log(arguments) });
+
 
 
 
@@ -114,17 +234,21 @@ function scrollToBottom(){
 </head>
 <body>
 
-<input type="text" id="username_txt" placeholder="Username"> 
-<a href="#" onclick="sendMsg('user')">Set name</a>
 
 
-<div id="chat">
-	<input type="text" id="msg_txt"> <a href="#" onclick="sendMsg('msg')">Send?</a>
+<div class="wrapper">
+	
 
-	<div id="message-box" class="message-box">
-		<div id='messages'></div>
+
+	<div id="chat">
+		<div id="message-box" class="message-box">
+			<div id='messages'></div>
+		</div>
+		<input type="text" id="username_txt" placeholder="Username"> 
+		<a href="#" class="button" onclick="sendMsg('user')">Set name</a><br>
+		<input type="text" id="msg_txt"> 
+		<a href="#" class="button" onclick="sendMsg('msg')">Send?</a>	
 	</div>
 </div>
-
 </body>
 </html>
