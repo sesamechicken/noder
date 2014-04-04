@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+body{
+	font-size: 90%;
+font-family: 'Helvetica', sans-serif;
+}
+input[type=text]{
+	padding: 0.3em;
+
+}
+.message-box{
+	max-height: 500px;
+	max-width: 300px;
+	padding: 1em;
+	overflow-y: auto;
+	background-color: #f8f8f8;
+	display: block;
+}
+.message {
+	padding: 1em .5em;
+	color: #666;
+	font-size: 0.8em;
+	margin: 0.5em 0;
+	border-bottom: 1px dotted rgba(0, 0, 0, 0.06);
+}
+.info{
+	padding: 3px;
+	color: #d8d8d8;
+	font-size: 0.7em;
+}
+.my-username{
+	color: #f00;
+	font-weight: bold;
+}
+.their-username{
+	color: #333;
+	font-weight: bold;
+}
+</style>
+<script src='//code.jquery.com/jquery-1.7.2.min.js'></script>
+<script src='//localhost:3000/socket.io/socket.io.js'></script>
+<script>
+
+
+
+
+
+
+
+var socket = io.connect('//localhost:3000');
+
+socket.on('welcome', function(data) {
+    
+
+
+    if(data.user){
+    	$('#messages').append('<div class="message"><span class="their-username">'+ data.user +'</span> - ' + data.message + '</div>');
+    	console.log('we have user name: ' + data.user);
+    }
+    else{
+    	$('#messages').append('<div class="message">' + data.message + '</div>');
+    	console.log('no username - could be a welcome message');
+    }
+
+
+    scrollToBottom();
+    socket.emit('i am client', {data: 'foo!'});
+});
+
+
+
+
+
+socket.on('time', function(data) {
+    console.log(data);
+    $('#messages').append('<div class="info">' + data.time + '</div>');
+    scrollToBottom();
+});
+
+
+
+
+socket.on('error', function() { console.error(arguments) });
+socket.on('message', function() { console.log(arguments) });
+
+
+
+
+function sendMsg(type){
+	if(type == "user"){
+		var user = $('#username_txt').val();
+		socket.emit( 'new user', {data: user});
+		console.log('sent: data: '+ user);
+	}
+	if (type == "msg") {
+		var msg = $('#msg_txt').val();
+		var usr =  $('#username_txt').val();
+
+		socket.emit( 'message', {data: msg, user: usr});
+
+		$('#messages').append('<div class="message"><span class="my-username">'+ usr +'</span> - ' + msg + '</div>');
+    	scrollToBottom();
+		console.log('sent: data: '+ msg);
+	};
+}
+
+function scrollToBottom(){
+	$('#message-box').scrollTop($('#message-box')[0].scrollHeight);
+}
+
+</script>
+</head>
+<body>
+
+<input type="text" id="username_txt" placeholder="Username"> 
+<a href="#" onclick="sendMsg('user')">Set name</a>
+
+
+<div id="chat">
+	<input type="text" id="msg_txt"> <a href="#" onclick="sendMsg('msg')">Send?</a>
+
+	<div id="message-box" class="message-box">
+		<div id='messages'></div>
+	</div>
+</div>
+
+</body>
+</html>
