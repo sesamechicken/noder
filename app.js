@@ -33,7 +33,7 @@ function userList(){
 
 setInterval(userList, 10000);
 
-// Send current time every 10 secs
+// Send current time every 30 secs
 setInterval(sendTime, 30000);
 
 
